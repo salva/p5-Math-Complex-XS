@@ -1,0 +1,6 @@
+Revision history for Perl extension Math::Complex::XS.
+
+0.01  Thu Sep  6 12:45:07 2012
+	- original version; created by h2xs 1.23 with options
+		-An Math::Complex::XS
+
