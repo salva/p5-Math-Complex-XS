@@ -1,44 +1,72 @@
 package Math::Complex::XS;
 
-use 5.014002;
+our $VERSION = '0.01';
+
+use 5.010;
 use strict;
 use warnings;
-
-require Exporter;
-
-our @ISA = qw(Exporter);
-
-# Items to export into callers namespace by default. Note: do not export
-# names by default without a very good reason. Use EXPORT_OK instead.
-# Do not simply export all your public functions/methods/constants.
-
-# This allows declaration	use Math::Complex::XS ':all';
-# If you do not need this, moving things directly into @EXPORT or @EXPORT_OK
-# will save memory.
-our %EXPORT_TAGS = ( 'all' => [ qw(
-	
-) ] );
-
-our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
-
-our @EXPORT = qw(
-	
-);
-
-our $VERSION = '0.01';
+use Exporter qw(import);
 
 require XSLoader;
 XSLoader::load('Math::Complex::XS', $VERSION);
 
-# Preloaded methods go here.
+our %EXPORT_TAGS = ( trig => [qw( pi
+                                  tan
+                                  csc cosec sec cot cotan
+                                  asin acos atan
+                                  acsc acosec asec acot acotan
+                                  sinh cosh tanh
+                                  csch cosech sech coth cotanh
+                                  asinh acosh atanh
+                                  acsch acosech asech acoth acotanh
+                               )],
+                     pi    => [qw(pi pi2 pi4 pip2 pip4 Inf)]
+                   );
+
+our @EXPORT_OK = @{$EXPORT_TAGS{pi}};
+
+our @EXPORT = ( qw( i Re Im rho theta arg
+                    sqrt log ln
+                    log10 logn cbrt root
+                    cplx cplxe
+                    atan2 ),
+                @{$EXPORT_TAGS{trig}} );
+
+use overload
+	'+'	=> \&_plus,
+	'-'	=> \&_minus,
+	'*'	=> \&_multiply,
+	'/'	=> \&_divide,
+	'**'	=> \&_power,
+	'=='	=> \&_numeq,
+	'<=>'	=> \&_spaceship,
+	'neg'	=> \&_negate,
+	'~'	=> \&_conjugate,
+	'abs'	=> \&abs,
+	'sqrt'	=> \&sqrt,
+	'exp'	=> \&exp,
+	'log'	=> \&log,
+	'sin'	=> \&sin,
+	'cos'	=> \&cos,
+	'tan'	=> \&tan,
+	'atan2'	=> \&atan2,
+        '""'    => \&_stringify;
+
+
+sub pi   () { 4 * CORE::atan2(1, 1) }
+
+sub pi2  () { 2    * pi }
+sub pi4  () { 4    * pi }
+sub pip2 () { 0.5  * pi }
+sub pip4 () { 0.25 * pi }
 
 1;
+
 __END__
-# Below is stub documentation for your module. You'd better edit it!
 
 =head1 NAME
 
-Math::Complex::XS - Perl extension for blah blah blah
+Math::Complex::XS - Math::Complex replacement written in XS
 
 =head1 SYNOPSIS
 

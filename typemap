@@ -1,0 +1,19 @@
+TYPEMAP
+Cx        T_CX
+Cx_inv    T_CX_INV
+
+INPUT
+
+T_CX
+        $var = SvCx(aTHX_ $arg);
+
+T_CX_INV
+        $var = SvCx_inv(aTHX_ $arg);
+
+OUTPUT
+
+T_CX
+        $arg = newSVcx(aTHX_ $var);
+
+T_CX_INV
+        $arg = newSVcx_inv(aTHX_ $var);
